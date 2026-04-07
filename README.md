@@ -1,14 +1,10 @@
-# My Project
+# My eStore
 
-This is my first project 🚀
+Assignment 1
 
 ## Features
-- Feature 1
-- Feature 2
+- Landing page
 
-## How to run
-1. Install dependencies
-2. Run the project
 
 ## Author
-hafsa 
+hafsa zahid
