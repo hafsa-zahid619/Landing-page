@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My eStore | Home</title>
+  <title>My eStore | The Ultimate Tech Hub</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +21,7 @@
     <a href="#">Storage and blank media</a>
     <a href="#">Lenses and filters</a>
     <hr>
-    <a href="#">Deals</a>
+    <a href="#">Daily Deals</a>
     <a href="#">Help & Contact</a>
   </div>
 
@@ -33,7 +34,7 @@
     </div>
     
     <div class="search-bar">
-      <input type="text" placeholder="Search for anything">
+      <input type="text" placeholder="Search for electronic gadgets...">
       <button>Search</button>
     </div>
     
@@ -42,59 +43,56 @@
       <a href="#">Electronics</a>
       <a href="#">Motors</a>
       <a href="#">Fashion</a>
-      <a href="#">Collectibles</a>
-      <a href="#">Deals</a>
       <a href="#">Cart</a>
     </nav>
   </header>
 
-  <div class="hero">
+  <section class="hero">
     <div class="hero-text">
       <h1>Don't miss out on insider perks</h1>
       <p>What are you waiting for? Make the most of your account benefits.</p>
       <button class="sign-in-btn">Sign In</button>
     </div>
-  </div>
+  </section>
+
+  <section class="categories-container">
+    <h2 class="section-title">Featured Tech Deals</h2>
+    <div id="electronics-deals" class="categories-grid">
+      <p>Loading the latest tech deals...</p>
+    </div>
+  </section>
 
   <section class="categories-container">
     <h2 class="section-title">The future in your hands</h2>
     <div class="categories-grid">
-      
       <div class="category-item">
         <div class="img-box"><img src="images/laptop.jpg" alt="Laptops"></div>
         <p>Laptops</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/computer parts.jpg" alt="Computer parts"></div>
         <p>Computer parts</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/smart phones.jpg" alt="Smartphones"></div>
         <p>Smartphones</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/enterprise networking.jpg" alt="Enterprise networking"></div>
         <p>Enterprise networking</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/tablets and e books.jpg" alt="Tablets and eBooks"></div>
         <p>Tablets and eBooks</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/storage and blank media.jpg" alt="Storage and blank media"></div>
         <p>Storage and blank media</p>
       </div>
-
       <div class="category-item">
         <div class="img-box"><img src="images/lenses and filters.jpg" alt="Lenses and filters"></div>
         <p>Lenses and filters</p>
       </div>
-
     </div>
   </section>
 
@@ -104,20 +102,26 @@
         <h2>Shopping made easy</h2>
         <p>Enjoy reliability, secure deliveries and hassle-free returns.</p>
       </div>
-      <button class="cta-button">Start now</button>
+      <button class="start-now-pill">Start now</button>
     </div>
   </section>
 
   <section class="accessories-hero">
     <div class="acc-text">
-      <h2>Endless accessories. Epic prices.</h2>
-      <p>Browse millions of upgrades for your ride.</p>
-      <button class="shop-now-btn">Shop now</button>
+      <h2>Endless gadgets. Epic prices.</h2>
+      <p>Browse millions of tech upgrades.</p>
+      <button class="shop-now-fixed">Shop now</button>
     </div>
     <div class="acc-images">
-      <div class="acc-card card-1"><img src="images/seat.png" alt="Car Seat"></div>
-      <div class="acc-card card-2"><img src="images/mat.png" alt="Floor Mat"></div>
-      <div class="acc-card card-3"><img src="images/bumper.png" alt="Bumper"></div>
+      <div class="acc-card-fixed card-1">
+        <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?auto=format&fit=crop&q=80&w=300" alt="Smartphone Gadget">
+      </div>
+      <div class="acc-card-fixed card-2">
+        <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=300" alt="Monitor Gadget">
+      </div>
+      <div class="acc-card-fixed card-3">
+        <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=300" alt="PC Component">
+      </div>
     </div>
   </section>
 
@@ -134,12 +138,7 @@
         <a href="#">How to sell</a>
       </div>
       <div class="footer-col">
-        <h4>eBay companies</h4>
-        <a href="#">TCGplayer</a>
-        <h4 style="margin-top:20px;">Stay connected</h4>
-      </div>
-      <div class="footer-col">
-        <h4>About eBay</h4>
+        <h4>About My eStore</h4>
         <a href="#">Company info</a>
         <a href="#">News</a>
       </div>
@@ -151,25 +150,65 @@
     </div>
   </footer>
 
-  <div class="floating-controls">
-    <button class="control-btn" title="Go to top">↑</button>
-    <button class="control-btn" title="Get help">?</button>
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div id="modal-body"></div>
+    </div>
   </div>
 
   <script>
+    // 1. Sidebar Toggle Logic
     function toggleMenu() {
-      const menu = document.getElementById("side-menu");
-      const overlay = document.getElementById("overlay");
-      
-      if (menu.style.width === "280px") {
-        menu.style.width = "0";
-        overlay.style.display = "none";
+      const menu = $("#side-menu");
+      const overlay = $("#overlay");
+      if (menu.width() > 0) {
+        menu.css("width", "0");
+        overlay.hide();
       } else {
-        menu.style.width = "280px";
-        overlay.style.display = "block";
+        menu.css("width", "280px");
+        overlay.show();
       }
     }
-  </script>
 
+    $(document).ready(function() {
+      // 2. AJAX Call for Electronics Deals
+      $.ajax({
+        url: "https://fakestoreapi.com/products/category/electronics",
+        method: "GET",
+        success: function(products) {
+          const grid = $("#electronics-deals");
+          grid.empty(); 
+          products.slice(0, 4).forEach(p => {
+            grid.append(`
+              <div class="category-item dynamic-card">
+                <div class="img-box"><img src="${p.image}" alt="${p.title}"></div>
+                <div class="product-info">
+                  <p class="product-price">$${p.price}</p>
+                  <button class="quick-view-btn" data-id="${p.id}">Quick View</button>
+                </div>
+              </div>
+            `);
+          });
+        }
+      });
+
+      // 3. Quick View Modal Logic
+      $(document).on("click", ".quick-view-btn", function() {
+        const id = $(this).data("id");
+        $.get(`https://fakestoreapi.com/products/${id}`, function(data) {
+          $("#modal-body").html(`
+            <img src="${data.image}" style="width:180px; margin-bottom:15px;">
+            <h2>${data.title}</h2>
+            <p style="margin: 15px 0; font-size: 14px; color: #555;">${data.description}</p>
+            <h3 style="color:#0066ff;">$${data.price}</h3>
+          `);
+          $("#product-modal").fadeIn(200);
+        });
+      });
+
+      $(".close-modal, .overlay").click(() => $("#product-modal").fadeOut(200));
+    });
+  </script>
 </body>
 </html>
