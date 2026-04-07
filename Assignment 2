@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My eStore | The Ultimate Tech Hub</title>
+  
+  <style>
+    /* Reset & General */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      background: #ffffff; 
+      color: #1a1a1a; 
+      overflow-x: hidden; 
+    }
 
+    /* Header & Navigation */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 5%;
+      background: white;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .menu-icon { font-size: 24px; cursor: pointer; color: #333; }
+    .logo { font-size: 24px; font-weight: bold; color: #004080; }
+
+    .search-bar { flex: 1; display: flex; margin: 0 30px; }
+    .search-bar input { width: 100%; max-width: 500px; padding: 10px 15px; border: 1px solid #333; border-radius: 25px 0 0 25px; outline: none; }
+    .search-bar button { padding: 10px 20px; border: 1px solid #333; border-left: none; background: #0066ff; color: white; border-radius: 0 25px 25px 0; cursor: pointer; font-weight: bold; }
+
+    nav a { margin-left: 15px; text-decoration: none; color: #333; font-size: 13px; font-weight: 500; }
+
+    /* Side Navigation */
+    .side-nav {
+      height: 100%; width: 0; position: fixed; z-index: 2100;
+      top: 0; left: 0; background-color: #fff;
+      overflow-x: hidden; transition: 0.3s; padding-top: 60px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+    .side-nav a { padding: 12px 32px; text-decoration: none; font-size: 16px; color: #333; display: block; }
+    .overlay { display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0,0,0,0.5); z-index: 2000; }
+
+    /* Hero Section */
+    .hero {
+      width: 100%; height: 420px;
+      background: url('images/background.jpg') center/cover no-repeat;
+      display: flex; align-items: center; padding-left: 8%;
+    }
+
+    .hero-text {
+      background-color: rgba(0, 0, 0, 0.75); 
+      padding: 35px;
+      border-radius: 12px;
+      max-width: 480px;
+      color: white;
+    }
+    .hero-text h1 { font-size: 36px; margin-bottom: 10px; color: white; }
+    .hero-text p { font-size: 18px; margin-bottom: 20px; color: white; }
+    .sign-in-btn { background: white; color: black; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+
+    /* Categories Grid - Sizing Fixes Integrated */
+    .categories-container { padding: 50px 5%; }
+    .section-title { font-size: 24px; margin-bottom: 25px; font-weight: bold; }
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+    
+    .img-box { 
+      background: #f3f3f3; 
+      border-radius: 20px; 
+      aspect-ratio: 1/1; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      overflow: hidden; 
+      margin-bottom: 10px;
+      padding: 15px;
+    }
+    
+    .img-box img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: contain; /* Important: Fixes the sizing issue */
+      transition: 0.3s ease; 
+    }
+    
+    .img-box:hover img { transform: scale(1.1); }
+    .category-item p { font-size: 14px; font-weight: 600; text-align: left; }
+
+    /* Dynamic Card (AJAX) */
+    .dynamic-card { border: 1px solid #f0f0f0; padding: 15px; border-radius: 15px; text-align: center; background: #fff; }
+    .product-price { font-weight: bold; font-size: 18px; color: #0066ff; margin: 10px 0; }
+    .quick-view-btn { background: #1a1a1a; color: white; border: none; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 12px; }
+
+    /* CTA Banner (Start Now) */
+    .cta-banner { background: #f7f7f7; border-radius: 20px; padding: 40px; margin: 0 5% 50px 5%; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; }
+    .cta-button { 
+      background: #1a1a1a; 
+      color: white; 
+      border: none; 
+      padding: 14px 35px; 
+      border-radius: 30px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      transition: 0.2s;
+    }
+    .cta-button:hover { background: #333; transform: scale(1.05); }
+
+    /* Accessories Section (Black Hero) */
+    .accessories-hero { background: #1a1a1a; color: white; padding: 80px 5%; display: flex; align-items: center; justify-content: space-between; overflow: hidden; }
+    .acc-text h2 { font-size: 40px; margin-bottom: 15px; }
+    .acc-text p { color: #aaa; margin-bottom: 25px; }
+
+    .acc-images { display: flex; gap: 25px; }
+    .acc-card { 
+      background: white; 
+      border-radius: 20px; 
+      width: 190px; 
+      height: 240px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+      overflow: hidden;
+    }
+    .acc-card img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-1 { transform: rotate(-8deg) translateY(20px); }
+    .card-2 { transform: rotate(5deg) translateY(-10px); }
+    .card-3 { transform: rotate(-5deg) translateY(15px); }
+
+    /* Modal Styles */
+    .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+    .modal-content { background: white; margin: 8% auto; padding: 40px; width: 90%; max-width: 550px; border-radius: 20px; position: relative; text-align: center; }
+    .close-modal { position: absolute; right: 20px; top: 15px; font-size: 32px; cursor: pointer; }
+
+    /* Footer */
+    footer { padding: 60px 5%; border-top: 1px solid #ddd; background: #fafafa; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 40px; }
+    .footer-col a { display: block; text-decoration: none; color: #666; font-size: 13px; margin-bottom: 8px; }
+    .footer-col h4 { font-size: 14px; margin-bottom: 15px; text-transform: uppercase; color: #333; }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <div id="side-menu" class="side-nav">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleMenu()">&times;</a>
+    <h3 style="padding: 0 32px;">Categories</h3>
+    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+    <a href="#">Laptops</a>
+    <a href="#">Computer parts</a>
+    <a href="#">Smartphones</a>
+    <a href="#">Enterprise networking</a>
+    <a href="#">Tablets and eBooks</a>
+    <a href="#">Storage and media</a>
+    <a href="#">Lenses and filters</a>
+  </div>
+  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+  <header>
+    <div class="header-left">
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <div class="logo">My eStore</div>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for electronic gadgets...">
+      <button>Search</button>
+    </div>
+    <nav>
+      <a href="#">Saved</a>
+      <a href="#">Electronics</a>
+      <a href="#">Motors</a>
+      <a href="#">Cart</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Don't miss out on insider perks</h1>
+      <p>What are you waiting for? Make the most of your account benefits.</p>
+      <button class="sign-in-btn">Sign In</button>
+    </div>
+  </section>
+
+  <section class="categories-container">
+    <h2 class="section-title">Featured Tech Deals</h2>
+    <div id="electronics-deals" class="categories-grid">
+      <p>Loading the latest tech deals...</p>
+    </div>
+  </section>
+
+  <section class="categories-container">
+    <h2 class="section-title">The future in your hands</h2>
+    <div class="categories-grid">
+      <div class="category-item">
+        <div class="img-box"><img src="images/laptop.jpg" alt="Laptops"></div>
+        <p>Laptops</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/computer parts.jpg" alt="Computer parts"></div>
+        <p>Computer parts</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/smart phones.jpg" alt="Smartphones"></div>
+        <p>Smartphones</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/enterprise networking.jpg" alt="Networking"></div>
+        <p>Enterprise networking</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/tablets and e books.jpg" alt="Tablets"></div>
+        <p>Tablets and eBooks</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/storage and blank media.jpg" alt="Storage"></div>
+        <p>Storage and blank media</p>
+      </div>
+      <div class="category-item">
+        <div class="img-box"><img src="images/lenses and filters.jpg" alt="Lenses"></div>
+        <p>Lenses and filters</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="cta-content">
+      <h2>Shopping made easy</h2>
+      <p>Enjoy reliability, secure deliveries and hassle-free returns.</p>
+    </div>
+    <button class="cta-button">Start now</button>
+  </section>
+
+  <section class="accessories-hero">
+    <div class="acc-text">
+      <h2>Endless gadgets. Epic prices.</h2>
+      <p>Browse millions of tech upgrades.</p>
+      <button class="shop-now-fixed">Shop now</button>
+    </div>
+    <div class="acc-images">
+      <div class="acc-card card-1">
+        <img src="https://images.unsplash.com/photo-1546054454-aa26e2b734c7?auto=format&fit=crop&q=80&w=300" alt="Smartphone">
+      </div>
+      <div class="acc-card card-2">
+        <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=300" alt="Monitor">
+      </div>
+      <div class="acc-card card-3">
+        <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=300" alt="SSD">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Buy</h4>
+        <a href="#">Registration</a>
+        <a href="#">Bidding help</a>
+      </div>
+      <div class="footer-col">
+        <h4>Sell</h4>
+        <a href="#">Start selling</a>
+        <a href="#">How to sell</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="#">Company info</a>
+        <a href="#">News</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Sidebar Toggle Logic
+    function toggleMenu() {
+      const menu = $("#side-menu");
+      const overlay = $("#overlay");
+      if (menu.width() > 0) {
+        menu.width(0);
+        overlay.hide();
+      } else {
+        menu.width(280);
+        overlay.show();
+      }
+    }
+
+    $(document).ready(function() {
+      // 2. AJAX Fetch for Featured Electronics
+      $.ajax({
+        url: "https://fakestoreapi.com/products/category/electronics",
+        method: "GET",
+        success: function(products) {
+          const grid = $("#electronics-deals").empty();
+          products.slice(0, 4).forEach(p => {
+            grid.append(`
+              <div class="category-item dynamic-card">
+                <div class="img-box"><img src="${p.image}" alt="${p.title}"></div>
+                <div class="product-info">
+                  <p class="product-price">$${p.price}</p>
+                  <button class="quick-view-btn" data-id="${p.id}">Quick View</button>
+                </div>
+              </div>
+            `);
+          });
+        }
+      });
+
+      // 3. Quick View Modal Interaction
+      $(document).on("click", ".quick-view-btn", function() {
+        const id = $(this).data("id");
+        $.get(`https://fakestoreapi.com/products/${id}`, function(data) {
+          $("#modal-body").html(`
+            <img src="${data.image}" style="width:160px; margin-bottom:15px;">
+            <h3>${data.title}</h3>
+            <p style="margin: 15px 0; font-size: 14px; color: #555;">${data.description.substring(0, 150)}...</p>
+            <h4 style="color:#0066ff; font-size: 20px;">$${data.price}</h4>
+          `);
+          $("#product-modal").fadeIn(200);
+        });
+      });
+
+      $(".close-modal, .overlay").click(() => $("#product-modal").fadeOut(200));
+    });
+  </script>
+</body>
+</html>
