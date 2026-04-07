@@ -8,13 +8,36 @@
 </head>
 <body>
 
+  <div id="side-menu" class="side-nav">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleMenu()">&times;</a>
+    <h3>Categories</h3>
+    <hr>
+    <a href="#">Laptops</a>
+    <a href="#">Computer parts</a>
+    <a href="#">Smartphones</a>
+    <a href="#">Enterprise networking</a>
+    <a href="#">Tablets and eBooks</a>
+    <a href="#">Storage and blank media</a>
+    <a href="#">Lenses and filters</a>
+    <hr>
+    <a href="#">Deals</a>
+    <a href="#">Help & Contact</a>
+  </div>
+
+  <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
   <header>
-    <div class="logo">My eStore</div>
+    <div class="header-left">
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <div class="logo">My eStore</div>
+    </div>
+    
     <div class="search-bar">
       <input type="text" placeholder="Search for anything">
       <button>Search</button>
     </div>
-    <nav>
+    
+    <nav class="top-nav">
       <a href="#">Saved</a>
       <a href="#">Electronics</a>
       <a href="#">Motors</a>
@@ -132,6 +155,21 @@
     <button class="control-btn" title="Go to top">↑</button>
     <button class="control-btn" title="Get help">?</button>
   </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("side-menu");
+      const overlay = document.getElementById("overlay");
+      
+      if (menu.style.width === "280px") {
+        menu.style.width = "0";
+        overlay.style.display = "none";
+      } else {
+        menu.style.width = "280px";
+        overlay.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
 </html>
