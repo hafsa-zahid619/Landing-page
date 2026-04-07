@@ -1,9 +1,9 @@
 # My eStore
 
-Assignment 1
+Assignment 2
 
 ## Features
-- Landing page
+- Landing page - with responsive menu bar
 
 
 ## Author
