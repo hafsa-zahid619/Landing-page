@@ -251,7 +251,7 @@
       const menu = $("#side-menu");
       const overlay = $("#overlay");
       menu.width() === 280 ? (menu.width(0), overlay.hide()) : (menu.width(280), overlay.show());
-    }
+    }1
 
     $(document).ready(function() {
       // Dynamic Deal Fetching
