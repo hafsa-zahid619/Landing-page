@@ -6,7 +6,25 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const expressLayouts = require('express-ejs-layouts'); // Required per instructions
 
+const app = express();
+
+// Database initialization
+mongoose.connect('mongodb://localhost:27017/electronicsStore');
+
+// Set EJS Template Configurations & Master Layout Wrapper
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Apply Route Link Controllers
+app.use('/', require('./routes/sales'));
+
+app.listen(3000, () => console.log('Dashboard active on port 3000!'));
 // Add this at the absolute top of app.js
 require('dotenv').config();
 

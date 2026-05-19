@@ -1,0 +1,44 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Real-Time Administrative Sales Dashboard</h2>
+    <p class="text-muted">Metrics refresh automatically every 10 seconds via background AJAX streams.</p>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <h2 class="card-text">$<span id="revenue-display"><%= totalRevenue %></span></h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders Placed</h5>
+                    <h2 class="card-text"><span id="orders-display"><%= totalOrders %></span></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Function to hit the API route and modify DOM layout elements dynamically
+        function updateDashboardMetrics() {
+            $.getJSON('/api/sales-data', function(data) {
+                // Dynamically swap the numeric values inside elements smoothly
+                $('#revenue-display').text(data.totalRevenue);
+                $('#orders-display').text(data.totalOrders);
+                console.log('Dashboard statistics refreshed smoothly from API stream.');
+            }).fail(function() {
+                console.log('Error pulling live background updates from database engine.');
+            });
+        }
+
+        // Set up client-side automatic background timer loop (10,000 milliseconds = 10 seconds)
+        setInterval(updateDashboardMetrics, 1000); 
+    });
+</script>
